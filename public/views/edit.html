@@ -1,0 +1,76 @@
+<div class="jumbotron text-center">
+	<div class="ng-scope" ng-controller="EditController">
+			<h3>Add New Product</h3>
+			<form name="productForm" ng-submit="addProduct()" novalidate>
+				<fieldset>
+				<!-- Product ID -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.productID.$invalid  && (productForm.productID.$dirty || submitted) }">
+                    <label>Product ID</label>
+                    <input type="number" name="productID" class="form-control" ng-model="formData.productID" placeholder="Product ID" >
+                </div>
+				
+				<!-- Product Name -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.productname.$invalid && (productForm.productname.$dirty || submitted)}">
+					<label>Product Name</label>
+					<input type="text" name="productname" class="form-control" ng-model="formData.name" placeholder="Product Name" ng-minlength="3" ng-trim="true" ng-required="true">
+                    <p ng-show="productForm.productname.$error.required && (productForm.productname.$dirty || submitted)" class="help-block"> Product name is required.</p>
+                    <p ng-show="productForm.productname.$error.minlength && (productForm.productname.$dirty || submitted)" class="help-block">Product name is too short.</p>
+                    <p ng-show="productForm.productname.$error.pattern  && (productForm.productname.$dirty || submitted)" class="help-block">Product Name should be alpha-numeric.</p>
+                </div>
+				
+				<!-- Quantity -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.quantity.$invalid  && (productForm.quantity.$dirty || submitted) }">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" class="form-control" ng-model="formData.quantity" placeholder="Quantity" ng-pattern="/^[0-9]+$/" ng-required="true">
+                    <p ng-show="productForm.quantity.$error.pattern  && (productForm.quantity.$dirty || submitted)" class="help-block">Enter a valid quantity.</p>
+                </div>
+				
+				<!-- Cost Price -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.quantity.$invalid  && (productForm.quantity.$dirty || submitted) }">
+                    <label>Cost Price</label>
+                    <input type="number" name="costprice" class="form-control" ng-model="formData.costprice" placeholder="Cost Price"  ng-pattern="/^[0-9]+$/" ng-required="true" >
+                    <p ng-show="productForm.costprice.$error.pattern  && (productForm.costprice.$dirty || submitted)" class="help-block">Enter a valid Cost price.</p>
+                </div>
+				
+				<!-- Selling Price -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.quantity.$invalid  && (productForm.quantity.$dirty || submitted) }">
+                    <label>Selling Price</label>
+                    <input type="number" name="sellingprice" class="form-control" ng-model="formData.sellingprice" placeholder="Selling Price"  ng-pattern="/^[0-9]+$/" ng-required="true" greater-than="{{formData.costprice}}">
+                    <p ng-show="productForm.sellingprice.$error.pattern  && (productForm.sellingprice.$dirty || submitted)" class="help-block">Enter a valid Selling price.</p>
+                    <p ng-show="productForm.sellingprice.$error.greaterThan && (productForm.sellingprice.$dirty || submitted)" class="help-block">Selling price should be greater then cost price.</p>
+                </div>
+				
+				<!-- ng-disabled FOR ENABLING AND DISABLING SUBMIT BUTTON -->
+                <button type="submit" class="btn btn-primary" ng-disabled="productForm.$invalid" >Add Product</button>
+				</fieldset>
+			</form> 
+		
+		<div class="seperator"> </div>
+
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Product ID</th>
+					<th>Product Name</th>
+					<th>quantity</th>
+					<th>costPrice</th>
+					<th>sellingPrice</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="ng-scope" ng-repeat="product in productData">
+					<td class="ng-binding">{{ product.product_id }}</td>
+					<td class="ng-binding">{{ product.name }}</td>
+					<td class="ng-binding">{{ product.quantity }}</td>
+					<td class="ng-binding">{{ product.costPrice }}</td>
+					<td class="ng-binding">{{ product.sellingPrice }}</td>
+					<td>
+						<a ng-click="deleteProduct(product._id)" href="javascript:void(0)">delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</div>

@@ -1,0 +1,57 @@
+<div class="jumbotron text-center">
+	<h2>Product Home Page</h2>
+	<div class='container-fluid' ng-controller="HomeController as homeController">
+		<input type="text" ng-model="searchProduct" typeahead-on-select="homeController.displayProduct($item)" placeholder="Search product by name" typeahead="product for product in homeController.getProduct($viewValue)" typeahead-loading="loadingProduct" class="form-control">
+		<i ng-show="loadingProduct" class="glyphicon glyphicon-refresh"></i>
+		
+		<div class="seperator"> </div>
+	
+		<div ng-show="visible">
+
+		<form name="productForm" ng-submit="homeController.updateProduct()" novalidate>
+				<fieldset>
+				<!-- Product ID -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.productID.$invalid  && (productForm.productID.$dirty || submitted) }">
+                    <label>Product ID</label>
+                    <input type="number" name="productID" class="form-control" ng-model="homeController.productData.product_id" placeholder="Product ID" ng-readonly="true">
+                </div>
+				
+				<!-- Product Name -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.productname.$invalid && (productForm.productname.$dirty || submitted)}">
+		    <label>Product Name</label>
+		    <input type="text" name="productname" class="form-control" ng-model="homeController.productData.name" placeholder="Product Name" ng-minlength="3" ng-trim="true"  ng-keyup="saveProduct()" ng-required="true" >
+                    <p ng-show="productForm.productname.$error.required && (productForm.productname.$dirty || submitted)" class="help-block"> Product name is required.</p>
+                    <p ng-show="productForm.productname.$error.minlength && (productForm.productname.$dirty || submitted)" class="help-block">Product name is too short.</p>
+                    <p ng-show="productForm.productname.$error.pattern  && (productForm.productname.$dirty || submitted)" class="help-block">Product Name should be alpha-numeric.</p>
+                </div>
+				
+				<!-- Quantity -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.quantity.$invalid  && (productForm.quantity.$dirty || submitted) }">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" class="form-control" ng-model="homeController.productData.quantity" placeholder="Quantity" ng-pattern="/^[0-9]+$/" ng-readonly="true">
+                </div>
+				
+				<!-- Cost Price -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.quantity.$invalid  && (productForm.quantity.$dirty || submitted) }">
+                    <label>Cost Price</label>
+                    <input type="number" name="costprice" class="form-control" ng-model="homeController.productData.costPrice" placeholder="Cost Price"  ng-pattern="/^[0-9]+$/" ng-readonly="true">
+                </div>
+				
+				<!-- Selling Price -->
+                <div class="form-group" ng-class="{ 'has-error' : productForm.quantity.$invalid  && (productForm.quantity.$dirty || submitted) }">
+                    <label>Selling Price</label>
+                    <input type="number" name="sellingprice" class="form-control" ng-model="homeController.productData.sellingPrice" placeholder="Selling Price"  ng-pattern="/^[0-9]+$/" ng-required="true" greater-than="{{formData.costprice}}">
+                    <p ng-show="productForm.sellingprice.$error.pattern  && (productForm.sellingprice.$dirty || submitted)" class="help-block">Enter a valid Selling price.</p>
+                    <p ng-show="productForm.sellingprice.$error.greaterThan && (productForm.sellingprice.$dirty || submitted)" class="help-block">Selling price should be greater then cost price.</p>
+                </div>
+
+		<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+				</fieldset>
+			</form> 
+
+		</div>
+
+        <div ng-show="visible" ><h2 >{{productResData}}</h2> </div>
+
+		</div>
+</div>
